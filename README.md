@@ -1,1 +1,1 @@
-# MoLidity
+# S2M
