@@ -2,7 +2,6 @@
   "name": "solidity-to-move-transpiler",
   "version": "1.0.0",
   "type": "module",
-  "main": "dist/cli/index.js",
   "scripts": {
     "dev": "ts-node cli/src/index.ts",
     "dev:backend": "node --experimental-specifier-resolution=node --loader ts-node/esm web/backend/src/app.ts",

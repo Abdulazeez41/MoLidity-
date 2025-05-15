@@ -2,4 +2,4 @@ packages:
   - "core"
   - "cli"
   - "web/backend"
-  - "web/frontend"
+  - "web/frontend" 
