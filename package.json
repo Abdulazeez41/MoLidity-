@@ -1,0 +1,40 @@
+{
+  "name": "solidity-to-move-transpiler",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist/cli/index.js",
+  "scripts": {
+    "dev": "ts-node cli/src/index.ts",
+    "dev:backend": "node --experimental-specifier-resolution=node --loader ts-node/esm web/backend/src/app.ts",
+    "dev:frontend": "npm run dev --prefix web/frontend",
+    "build:frontend": "npm run build --prefix web/frontend",
+    "preview:frontend": "npm run preview --prefix web/frontend",
+    "build": "tsc -b",
+    "start": "node dist/cli/index.js",
+    "test": "vitest run",
+    "lint": "eslint . --ext .ts",
+    "clean": "tsc -b --clean"
+  },
+  "devDependencies": {
+    "@types/chalk": "^2.2.4",
+    "@types/cors": "^2.8.18",
+    "@types/express": "^5.0.1",
+    "@types/express-fileupload": "^1.5.1",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^20.11.19",
+    "@vitest/coverage-c8": "^0.33.0",
+    "eslint": "^8.56.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "vitest": "^0.33.0"
+  },
+  "dependencies": {
+    "commander": "^11.1.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "express-fileupload": "^1.5.1",
+    "multer": "^1.4.5-lts.2",
+    "solc": "^0.8.30",
+    "zod": "^3.24.4"
+  }
+}
