@@ -1,0 +1,13 @@
+{
+  "typeMappings": {
+    "IERC20": "0x2::coin::CoinStore",
+    "uint256": "u256"
+  },
+  "libraryMappings": {
+    "SafeMath": "0x1::safe_math"
+  },
+  "features": {
+    "verbose": true,
+    "formatOutput": true
+  }
+}
