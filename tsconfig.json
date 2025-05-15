@@ -5,7 +5,4 @@
     { "path": "cli" },
     { "path": "web/backend" }
   ],
-  "compilerOptions": {
-    "noEmit": true
-  }
 }
