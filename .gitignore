@@ -6,7 +6,7 @@ typechain
 typechain-types
 output
 uploads
-dist
+
 
 cache
 artifacts
