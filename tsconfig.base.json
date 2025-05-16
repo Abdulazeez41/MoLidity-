@@ -12,11 +12,25 @@
     "strict": true,
     "skipLibCheck": true,
     "baseUrl": ".",
+    "rootDir": "./",
     "paths": {
       "@core/*": ["core/src/*"],
       "@cli/*": ["cli/src/*"],
       "@backend/*": ["web/backend/src/*"],
       "@frontend/*": ["web/frontend/src/*"]
     }
-  }
+  },
+  "include": ["cli/**/*", "core/**/*", "web/backend/**/*", "web/frontend/**/*"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "web/frontend/dist",
+    "web/frontend/node_modules"
+  ],
+  "references": [
+    { "path": "./core" },
+    { "path": "./cli" },
+    { "path": "./web/backend" },
+    { "path": "./web/frontend" }
+  ]
 }

@@ -3,6 +3,6 @@
   "compilerOptions": {
     "outDir": "../dist/cli"
   },
-  "include": ["src"],
-  "references": [{ "path": "../core" }]
+  "include": ["src", "../core/**/*"],
+  "exclude": ["node_modules", "dist", "test", "tests", "**/*.spec.ts"]
 }

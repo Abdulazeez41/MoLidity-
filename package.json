@@ -1,15 +1,14 @@
 {
   "name": "solidity-to-move-transpiler",
   "version": "1.0.0",
-  "type": "module",
   "scripts": {
     "dev": "ts-node cli/src/index.ts",
-    "dev:backend": "node --experimental-specifier-resolution=node --loader ts-node/esm web/backend/src/app.ts",
+    "dev:backend": "nodemon /backend/src/app.ts",
     "dev:frontend": "npm run dev --prefix web/frontend",
     "build:frontend": "npm run build --prefix web/frontend",
     "preview:frontend": "npm run preview --prefix web/frontend",
     "build": "tsc -b",
-    "start": "node dist/cli/index.js",
+    "start": "node dist/backend/web/backend/src/app.js",
     "test": "vitest run",
     "lint": "eslint . --ext .ts",
     "clean": "tsc -b --clean"
@@ -23,6 +22,7 @@
     "@types/node": "^20.11.19",
     "@vitest/coverage-c8": "^0.33.0",
     "eslint": "^8.56.0",
+    "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "vitest": "^0.33.0"

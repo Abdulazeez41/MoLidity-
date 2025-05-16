@@ -3,29 +3,28 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 
-import { parseFullABI } from "@core/abi/abiParser";
-import { parseSolidityFile } from "@core/abi/solidityAstParser";
+import { parseFullABI } from "../../../../core/src/abi/abiParser";
+import { parseSolidityFile } from "../../../../core/src/abi/solidityAstParser";
 import {
   generateMove,
   generateMoveFromParsedContract,
-} from "@core/move/moveGenerator";
+} from "../../../../core/src/move/moveGenerator";
 
 const router = express.Router();
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: "uploads/", limits: { fieldSize: Infinity } });
 
-router.post("/transpile", upload.single("file"), async (req, res) => {
-  const file = req.file;
-  const contractName = req.body.name || "TranspiledContract";
-
-  if (!file) {
-    res.status(400).json({ error: "No file uploaded." });
-    return;
-  }
-
-  const ext = path.extname(file.originalname);
-  let moveCode: string;
-
+router.post("/upload", upload.single("file"), async (req, res) => {
   try {
+    const file = req.file;
+    const contractName = req.body.name || "TranspiledContract";
+
+    if (!file) {
+      res.status(400).json({ error: "No file uploaded." });
+      return;
+    }
+
+    const ext = path.extname(file.originalname);
+    let moveCode: string;
     if (ext === ".json") {
       const abiJson = JSON.parse(fs.readFileSync(file.path, "utf8"));
       const parsed = parseFullABI(abiJson);
@@ -40,7 +39,7 @@ router.post("/transpile", upload.single("file"), async (req, res) => {
       );
     }
 
-    const outputDir = path.join(__dirname, "../../../output");
+    const outputDir = path.join(__dirname, "../../../../../../output");
     if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
 
     const moveFilePath = path.join(outputDir, `${contractName}.move`);

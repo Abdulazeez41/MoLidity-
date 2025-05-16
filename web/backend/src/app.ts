@@ -8,13 +8,16 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(fileUpload());
+// app.use(fileUpload());
 
-app.use("/output", express.static(path.join(__dirname, "../../output")));
+app.use(
+  "/output",
+  express.static(path.join(__dirname, "../../../../../output"))
+);
 
 app.use("/api/transpile", transpileRoute);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`✅ Backend server running on http://localhost:${PORT}`);
 });

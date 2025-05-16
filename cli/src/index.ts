@@ -1,17 +1,17 @@
 import * as path from "path";
 import * as fs from "fs";
 
-import { PluginManager } from "@core/plugin/pluginManager";
+import { PluginManager } from "../../core/src/plugin/pluginManager";
 
-import { TranspilerConfig } from "@core/config/config";
+import { TranspilerConfig } from "../../core/src/config/config";
 
-import { parseFullABI, getFunctionABIs } from "@core/abi/abiParser";
+import { parseFullABI, getFunctionABIs } from "../../core/src/abi/abiParser";
 
-import { generateMoveModule } from "@core/move/moveGenerator";
+import { generateMoveModule } from "../../core/src/move/moveGenerator";
 
 import { writeMoveModuleToFile } from "./fileWriter";
 
-import { ensureMoveTomlDeps } from "@core/tomlUpdater";
+import { ensureMoveTomlDeps } from "../../core/src/tomlUpdater";
 
 export interface TranspileOptions {
   dryRun?: boolean;

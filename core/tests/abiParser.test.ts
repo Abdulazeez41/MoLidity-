@@ -13,7 +13,10 @@ describe("parseFullABI", () => {
       },
     ]);
 
-    const parsed = parseFullABI(abiJson);
+    const parsed = parseFullABI(abiJson) as unknown as Array<{
+      name: string;
+      inputs: Array<{ name: string; type: string }>;
+    }>;
 
     expect(parsed).toBeInstanceOf(Array);
     expect(parsed[0].name).toBe("balanceOf");
