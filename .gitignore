@@ -6,6 +6,10 @@ typechain
 typechain-types
 output
 uploads
+dist
+build
+*.log
+*.tsbuildinfo
 
 
 cache
