@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { parseFullABI } from "../src/abi/abiParser";
 
 describe("parseFullABI", () => {
-  it("parses a simple ABI", () => {
+  it("should correctly parse a sample ABI JSON", () => {
     const abiJson = JSON.stringify([
       {
         type: "function",
