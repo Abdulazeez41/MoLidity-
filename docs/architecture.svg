@@ -1,0 +1,82 @@
+<svg width="1000" height="800" viewBox="0 0 1000 800" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .title {
+      font: bold 28px 'Segoe UI', sans-serif;
+      fill: #2d3748;
+      text-anchor: middle;
+    }
+    .subtitle {
+      font: italic 16px 'Segoe UI', sans-serif;
+      fill: #718096;
+      text-anchor: middle;
+    }
+    .box {
+      fill: #ffffff;
+      stroke: #cbd5e0;
+      stroke-width: 2;
+      rx: 12;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+    }
+    .label {
+      font: 16px 'Segoe UI', sans-serif;
+      fill: #2d3748;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+    .arrow {
+      stroke: #4f46e5;
+      stroke-width: 2;
+      marker-end: url(#arrowhead);
+      fill: none;
+    }
+    .note {
+      font: 14px 'Segoe UI', sans-serif;
+      fill: #718096;
+      text-anchor: middle;
+    }
+  </style>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7"
+            refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4f46e5"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="500" y="40" class="title">S2M - Solidity to Move Transpiler Architecture</text>
+  <text x="500" y="65" class="subtitle">A modular transpilation system from Solidity to Move</text>
+
+  <!-- Interfaces -->
+  <rect x="100" y="100" width="300" height="90" class="box"/>
+  <text x="250" y="145" class="label">Web Interface (React)</text>
+
+  <rect x="600" y="100" width="300" height="90" class="box"/>
+  <text x="750" y="145" class="label">CLI Interface</text>
+
+  <!-- Core Module -->
+  <rect x="200" y="220" width="600" height="130" class="box"/>
+  <text x="500" y="260" class="label">Core Module</text>
+  <text x="500" y="285" class="label">(abiParser.ts, solidityAstParser.ts,</text>
+  <text x="500" y="305" class="label">moveGenerator.ts, typeMapper.ts,</text>
+   <text x="500" y="325" class="label">importMapper.ts)</text>
+
+  <!-- Arrows to Core -->
+  <line x1="250" y1="190" x2="500" y2="220" class="arrow"/>
+  <line x1="750" y1="190" x2="500" y2="220" class="arrow"/>
+
+  <!-- Output Modules -->
+  <rect x="100" y="380" width="300" height="90" class="box"/>
+  <text x="250" y="420" class="label">/output/ (.move files only)</text>
+
+  <rect x="600" y="380" width="300" height="90" class="box"/>
+  <text x="750" y="420" class="label">/move-project/ (Move App)(COMING SOON)</text>
+
+  <!-- Arrows from Core -->
+  <line x1="500" y1="350" x2="250" y2="380" class="arrow"/>
+  <line x1="500" y1="350" x2="750" y2="380" class="arrow"/>
+
+  <!-- Side Notes -->
+  <text x="250" y="490" class="note">Quick inspection &amp; debugging</text>
+  <text x="750" y="490" class="note">Full Sui integration testing</text>
+</svg>
