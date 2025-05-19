@@ -1,6 +1,16 @@
 import fs from "fs";
 import path from "path";
+import { logger } from "@core/utils/logger";
 
+/**
+ * Writes generated Move module code to a file.
+ *
+ * @param contractName - Name of the Solidity contract (used for filename)
+ * @param moveCode - Generated Move source code
+ * @param outputDir - Directory to write the file into
+ * @param options - Optional settings: dryRun, force, verbose
+ * @returns The full path where the file was written
+ */
 export function writeMoveModuleToFile(
   contractName: string,
   moveCode: string,
@@ -16,27 +26,29 @@ export function writeMoveModuleToFile(
   const outputPath = path.join(outputDir, `${contractName}.move`);
 
   if (dryRun) {
-    console.log("=== DRY RUN - OUTPUT ===");
-    console.log(moveCode);
+    logger.info("=== DRY RUN - OUTPUT ===");
+    logger.verbose(moveCode, true);
     return outputPath;
   }
 
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
-    console.log(`📁 Created output directory: ${outputDir}`);
+    logger.info(`📁 Created output directory: ${outputDir}`);
   }
 
   if (fs.existsSync(outputPath) && !force) {
-    throw new Error(
-      `File already exists at ${outputPath}. Use --force to overwrite.`
+    logger.error(`File already exists at: ${outputPath}`);
+    throw new Error("File exists. Use --force to overwrite.");
+  }
+
+  try {
+    fs.writeFileSync(outputPath, moveCode, "utf-8");
+    logger.success(`✅ Wrote Move module to: ${outputPath}`);
+    return outputPath;
+  } catch (err) {
+    logger.error(
+      `Failed to write file to ${outputPath}: ${(err as Error).message}`
     );
+    throw err;
   }
-
-  fs.writeFileSync(outputPath, moveCode, "utf-8");
-
-  if (verbose) {
-    console.log(`✅ Wrote Move module to ${outputPath}`);
-  }
-
-  return outputPath;
 }

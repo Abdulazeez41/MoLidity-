@@ -3,7 +3,7 @@ import * as fs from "fs";
 
 import { PluginManager } from "../../core/src/plugin/pluginManager";
 
-import { TranspilerConfig } from "../../core/src/config/config";
+import { TranspilerConfig } from "../../core/src/config";
 
 import { parseFullABI, getFunctionABIs } from "../../core/src/abi/abiParser";
 
