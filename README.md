@@ -151,8 +151,8 @@ sui move test
 
 ## 📦 Example Input
 
-```jsonc
-/* examples/MyContract.abi.json */
+```json
+/* examples/MyContract.json */
 [
   {
     "type": "function",
@@ -195,14 +195,34 @@ contract MyContract {
 ## 📄 Generated Output (Simplified)
 
 ```move
-module MyContract {
-    public fun store_value(account: &signer, x: u64) {
-        // store implementation
-    }
+module my_contract::MyContract {
 
-    public fun get_value(account: &signer): u64 {
-        // return stored value
-    }
+      struct MyContract has key {
+        id: UID,
+        owner: address,
+      }
+      struct storeValueEvent has copy, drop, store {
+        x: u256,
+      };
+
+      struct getValueEvent has copy, drop, store {
+
+      };
+
+      fun init(ctx: &mut TxContext) {
+        transfer::transfer(MyContract {
+          id: object::new(ctx),
+          owner: tx_context::sender(ctx),
+        }, tx_context::sender(ctx));
+      }
+
+      public entry fun storeValue(self: &mut MyContract, x: u256, ctx: &mut TxContext) {
+        // TODO: implement storeValue logic
+      }
+
+      public(friend) getValue(): u256 {
+            // TODO: implement getValue logic
+      }
 }
 ```
 
