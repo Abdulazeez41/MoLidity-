@@ -1,9 +1,9 @@
-import React from 'react';
-import FileUploader from './components/FileUploader';
+import React from "react";
+import FileUploader from "./components/FileUploader";
 
 const App: React.FC = () => {
   return (
-    <div>
+    <div className="min-h-screen bg-gray-900 text-white">
       <FileUploader />
     </div>
   );
