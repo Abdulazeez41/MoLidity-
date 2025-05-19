@@ -1,5 +1,5 @@
-import { ABIEntry } from "../types.js";
-import { TranspilerPlugin } from "./plugin.js";
+import { ABIEntry, AstNode, StatementHelperFunctions } from "../types";
+import { TranspilerPlugin } from "./plugin";
 
 export class PluginManager {
   private plugins: TranspilerPlugin[] = [];
@@ -28,6 +28,21 @@ export class PluginManager {
       (acc, p) => p.afterGenerateMove?.(acc) || acc,
       moveCode
     );
+  }
+
+  runCustomStatementHandler(
+    stmt: AstNode,
+    helpers: StatementHelperFunctions
+  ): string | null {
+    for (const plugin of this.plugins) {
+      if (plugin.handleStatement) {
+        const result = plugin.handleStatement(stmt, helpers);
+        if (result !== null) {
+          return result;
+        }
+      }
+    }
+    return null;
   }
 
   getAllTypeOverrides(): Record<string, string> {
