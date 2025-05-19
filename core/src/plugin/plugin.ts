@@ -1,5 +1,4 @@
-import { ABIEntry } from "../types.js";
-import { MoveStruct } from "../move/typeMapper.js";
+import { ABIEntry, AstNode, StatementHelperFunctions } from "../types";
 
 export interface TranspilerPlugin {
   name: string;
@@ -17,4 +16,10 @@ export interface TranspilerPlugin {
 
   // Provide additional library mappings
   getLibraryOverrides?(): Record<string, string>;
+
+  // New: handle unsupported statements
+  handleStatement?(
+    stmt: AstNode,
+    helpers: StatementHelperFunctions
+  ): string | null;
 }
