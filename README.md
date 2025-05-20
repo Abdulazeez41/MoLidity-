@@ -2,72 +2,121 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A robust monorepo-based toolchain that transpiles Solidity smart contract **ABIs or source `.sol` files** into Move-compatible modules. Built for both CLI and Web usage, it supports advanced type mapping, modular imports, and dynamic Move project integration.
+A powerful monorepo-based toolchain that transpiles Solidity smart contracts into Move-compatible modules for both **Sui** and **Aptos** blockchains. Supports advanced type mapping, modular imports, dynamic Move project integration, and AI-assisted fallback for complex constructs.
 
 ## 📚 Table of Contents
 
-- [📁 Monorepo Structure](#-monorepo-structure)
+- [📁 Project Structure](#-project-structure)
 - [🚀 Features](#-features)
+- [🧠 AI Integration](#-ai-integration)
 - [🛠️ Installation](#️-installation)
 - [💻 Usage](#-usage)
 
   - [CLI (Local Development)](#cli-local-development)
   - [Web App (File Upload)](#web-app-file-upload)
 
-- [🔬 Move Testing](#-move-testing)
-- [📦 Example Input](#-example-input)
-- [📄 Generated Output (Simplified)](#-generated-output-simplified)
-- [🧪 Tests](#-tests)
+- [🔬 Move Code Generation](#-move-code-generation)
+- [📦 Example Input → Output](#-example-input--output)
+- [🧪 Tests & Linting](#-tests--linting)
 - [🔗 Contribution Guide](#-contribution-guide)
 - [📌 Roadmap](#-roadmap)
 - [📜 License](#-license)
 
 ---
 
-## 📁 Monorepo Structure
+## 📁 Project Structure
 
 ```
 solidity-to-move/
-├── core/            # Shared logic (ABI/Solidity parsing, Move generation, type mapping)
-├── cli/             # Command-line interface
+├── core/               # Shared logic: ABI parsing, Move generation, type mapping
+│   ├── src/
+│   │   ├── abi/        # Solidity AST parser, ABI generator
+│   │   ├── move/       # Move code generator, type mapper, import resolver
+│   │   ├── plugin/     # Extensible plugin system
+│   │   ├── utils/      # Utility functions, logger, config loader
+│   │   └── types.ts    # Shared types across the codebase
+│   └── tests/          # Unit tests for core modules
+├── cli/                # Command-line interface
+│   ├── src/
+│   │   ├── cli.ts      # Main CLI handler
+│   │   └── fileWriter.ts # Move module writer
 ├── web/
-│   ├── backend/     # Express backend API for file-based transpilation
-│   └── frontend/    # React frontend for user-friendly file upload
-├── move-project/    # Output Move project w/ generated .move and test files
-├── examples/        # Sample input (.abi.json or .sol)
-├── output/          # Generated Move files
-├── README.md        # This file
+│   ├── backend/        # Express API for file upload and transpile route
+│   └── frontend/       # React-based web interface with Monaco editor
+├── move-project/       # Auto-generated Move project (sources/, tests/)
+├── examples/           # Sample `.sol` and `.json` input files
+├── output/             # Generated `.move` files from CLI or Web
+├── README.md           # This file
+└── package.json
 ```
 
 ---
 
 ## 🚀 Features
 
-- ✅ Parse Solidity `.abi.json` or `.sol` files and generate Move-compatible smart contracts
-- ✅ Smart type mapping (`uint256`, `address`, `tuple[]`, etc.) → Move-native types
-- ✅ Function logic extraction from Solidity source for richer transpilation
-- ✅ Modular and reusable Move code generation
-- ✅ CLI and Web interfaces
-- ✅ Auto-populates `Move.toml` with dependencies
-- ✅ Generates Move unit tests for supported contracts
-- ✅ Built-in examples and output folders for inspection
+| Feature                      | Description                                                      |
+| ---------------------------- | ---------------------------------------------------------------- |
+| ✅ Solidity Parsing          | Parse `.sol` files and generate Move from function bodies        |
+| ✅ ABI Support               | Generate Move from standard `.abi.json`                          |
+| 🔁 Framework Abstraction     | Target `sui` or `aptos` Move dialects [Focus SUI]                |
+| 🧱 AST-Based Move Generation | Structured Move module builder using AST                         |
+| 🎯 Type Mapping              | `uint`, `address`, `string`, `mapping(...) → Table::Table<_, _>` |
+| 📦 Import Resolution         | Handles external libraries like OpenZeppelin                     |
+| ⚠️ Error Handling            | Reverts, require statements → aborts                             |
+| 📢 Event Support             | Solidity events → Move structs + emit logic                      |
+| 🧩 Plugin System             | Extendable architecture for custom mappings                      |
+| 🌐 Web UI                    | File uploader with Move syntax highlighting                      |
+| 💾 Download Move Code        | Save generated Move code as `.move` file                         |
+| 🧪 Move Linting              | Validate Move output before returning it                         |
+| 🧠 AI Fallback               | Uses DeepSeek Coder to assist with unsupported Solidity patterns |
+
+---
+
+## 🧠 AI Integration (DeepSeek)
+
+Integrated the **DeepSeek Coder LLM** via an abstracted service layer in:
+
+```ts
+core / src / ai / deepseekAiService.ts;
+```
+
+### Key AI Capabilities
+
+| Use Case                 | Description                                                    |
+| ------------------------ | -------------------------------------------------------------- |
+| ✅ Fallback Translation  | For unsupported Solidity constructs                            |
+| 🧱 Type Suggestions      | Maps complex Solidity types to Move                            |
+| 🛠️ Error Explanation     | Explains Move errors in human-readable terms                   |
+| 🤖 Smart Code Completion | Helps fill gaps in Move templates                              |
+| 📦 Dynamic Plugins       | AI can generate plugins based on natural language descriptions |
+
+> ✨ _AI integration is optional — users can toggle it via configuration._
 
 ---
 
 ## 🛠️ Installation
 
-### 1. Install Yarn Workspaces
+### Prerequisites
 
-```bash
-npm install -g yarn
-```
+- Node.js ≥ v18.x
+- Yarn (for workspace management)
+- Sui CLI (if testing Move output)
+- Rust toolchain (optional for Move formatter)
 
-### 2. Clone & Bootstrap
+### Steps
 
 ```bash
 git clone https://github.com/Abdulazeez41/S2M.git
 cd S2M
-yarn install
+npm install
+```
+
+### Install Sui CLI (for Move validation/testing)
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+rustup component add rustfmt
+cargo install --git https://github.com/MystenLabs/sui.git --branch devnet sui
 ```
 
 ---
@@ -78,213 +127,251 @@ yarn install
 
 ```bash
 cd cli
-yarn dev ../examples/MyContract.abi.json MyContract
+npm dev ../examples/MyContract.abi.json MyContract
 ```
 
-Or for Solidity source files:
+Or transpile a `.sol` file:
 
 ```bash
-yarn dev ../examples/MyContract.sol MyContract
+npm dev ../examples/MyToken.sol MyToken
 ```
 
-> Runs the transpiler using the given ABI or Solidity file and contract name.
+#### CLI Options:
 
-- Takes `.abi.json` or `.sol` as input.
-- Outputs `MyContract.move` into both `/output` and `/move-project/sources/`.
-- Optional 4th parameter: `inferredLibs` (e.g. `["0x1::vector"]`) can be passed for custom dependencies.
-
-💡 Tip: Consider renaming `yarn dev` to `yarn transpile` in scripts for clarity.
+- `--target <sui|aptos>` – Specify Move framework
+- `--dry-run` – Show output without writing files
+- `--dump-ast` – Output parsed AST instead of Move code
+- `--skip-lint` – Skip Move linting after generation
 
 ---
 
 ### Web App (File Upload)
 
-1. Start backend:
+Start backend:
 
 ```bash
 cd web/backend
-yarn dev
+npm run build
+npm run dev:backend
 ```
 
-2. Start frontend in a new terminal tab:
+Start frontend in another terminal:
 
 ```bash
 cd web/frontend
-yarn dev
+npm run dev:frontend
 ```
 
-3. Open: [http://localhost:5173](http://localhost:5173)
+Open: [http://localhost:5173](http://localhost:5173)
 
-4. Upload `.abi.json` or `.sol`, enter contract name, and download `.move` file.
+Upload a `.sol` or `.json` file, enter contract name, and download the Move code directly.
 
-💡 Tip: You can run both processes together by adding this to your root `package.json`:
-
-```json
-"scripts": {
-  "start:web": "cd web/backend && yarn dev & cd web/frontend && yarn dev"
-}
-```
-
-Then run:
-
-```bash
-yarn start:web
-```
+💡 Tip: You can also toggle between **Move output** and **AST dump mode**.
 
 ---
 
-## 🔬 Move Testing
+## 🔬 Move Code Generation
 
-Generated `.move` files are placed inside `move-project/sources/`
-Test templates are placed inside `move-project/tests/`
+Generated Move modules are placed in:
 
-To run tests:
-
-```bash
-cd move-project
-sui move test
+```
+output/MyContract.move
+move-project/sources/MyContract.move
 ```
 
-> Make sure you have the [Sui CLI](https://sui.dev/cli-tools/sui-cli-tool/) installed.
+Each Move module includes:
+
+- A state struct (`MyContract`)
+- An `init()` function for deployment
+- Function stubs with TODO comments
+- Proper imports (`use sui::event;`, `use sui::table;`, etc.)
+
+### Supported Constructs
+
+| Solidity                      | Move Equivalent                                                           |
+| ----------------------------- | ------------------------------------------------------------------------- |
+| `function myFunc(uint x)`     | `public entry fun my_func(x: u64, ctx: &mut TxContext)`                   |
+| `mapping(address => uint)`    | `Table::Table<address, u64>`                                              |
+| `event Transfer(...)`         | `struct TransferEvent has copy, drop, store { ... }` + `event::emit(...)` |
+| `require(...)`, `revert(...)` | `abort(0);`                                                               |
+| `contract MyContract { ... }` | `module myContract::MyContract  { ... }`                                  |
+| `uint256`, `address`, `bool`  | Mapped to `u256`, `address`, `bool` respectively                          |
 
 ---
 
-## 📦 Example Input
+## 📦 Example Input → Output
 
-```json
-/* examples/MyContract.json */
-[
-  {
-    "type": "function",
-    "name": "storeValue",
-    "inputs": [{ "name": "x", "type": "uint256" }],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "getValue",
-    "inputs": [],
-    "outputs": [{ "name": "", "type": "uint256" }],
-    "stateMutability": "view"
-  }
-]
-```
-
-Or:
+### Solidity Input
 
 ```solidity
-// examples/MyContract.sol
+// examples/MyToken.sol
 pragma solidity ^0.8.0;
 
-contract MyContract {
-    uint256 private value;
+contract MyToken {
+    mapping(address => uint) public balances;
+    string public name = "MyToken";
 
-    function storeValue(uint256 x) public {
-        value = x;
-    }
-
-    function getValue() public view returns (uint256) {
-        return value;
+    function transfer(address to, uint amount) public {
+        require(amount > 0, "Amount must be positive");
+        balances[to] += amount;
     }
 }
 ```
 
----
-
-## 📄 Generated Output (Simplified)
+### Move Output (Simplified)
 
 ```move
-module my_contract::MyContract {
+module my_token::MyToken {
+  use sui::object;
+  use sui::transfer;
+  use sui::tx_context;
+  use sui::event;
+  use sui::table;
 
-      struct MyContract has key {
-        id: UID,
-        owner: address,
-      }
-      struct storeValueEvent has copy, drop, store {
-        x: u256,
-      };
+  struct MyToken has key {
+    id: UID,
+    owner: address,
+    balances: Table::Table<address, u64>,
+    name: vector<u8>,
+  };
 
-      struct getValueEvent has copy, drop, store {
+  public entry fun init(ctx: &mut TxContext): MyToken {
+    transfer::transfer(MyToken {
+      id: object::new(ctx),
+      owner: tx_context::sender(ctx),
+      balances: table::new<address, u64>(ctx),
+      name: b"MyToken",
+    }, tx_context::sender(ctx));
+  }
 
-      };
+  public entry fun transfer(self: &mut MyToken, to: address, ctx: &mut TxContext) {
+    assert!(to != ::default(), 0);
+    self.balances.borrow_mut(&to).value = self.balances.borrow_mut(&to).value + amount;
+  }
 
-      fun init(ctx: &mut TxContext) {
-        transfer::transfer(MyContract {
-          id: object::new(ctx),
-          owner: tx_context::sender(ctx),
-        }, tx_context::sender(ctx));
-      }
-
-      public entry fun storeValue(self: &mut MyContract, x: u256, ctx: &mut TxContext) {
-        // TODO: implement storeValue logic
-      }
-
-      public(friend) getValue(): u256 {
-            // TODO: implement getValue logic
-      }
+  struct TransferEvent has copy, drop, store {
+    from: address,
+    to: address,
+    amount: u64,
+  };
 }
 ```
 
 ---
 
-## 🧪 Tests
+## 🧪 Tests & Linting
+
+Generated Move code supports unit test scaffolding:
+
+### Example Test
 
 ```move
 #[test]
-public fun test_store_and_get_value() {
-    let account = @0x1;
-    MyContract::store_value(account, 42);
-    let value = MyContract::get_value(account);
-    Test::assert(value == 42, 100);
+fun test_transfer() {
+    let sender = @0x1;
+    let receiver = @0x2;
+    let mut token = MyToken::init(&mut TxContext::new(sender));
+    MyToken::transfer(&mut token, receiver, &mut TxContext::new(sender));
+    let balance = *token.balances.borrow(&receiver);
+    assert(balance == 100, 100);
 }
 ```
 
----
-
-## 🔗 Contribution Guide
-
-### 1. Add Feature to Core
-
-Edit these key files:
-
-- `core/src/abiParser.ts` – ABI structure parsing
-- `core/src/solParser.ts` – Solidity `.sol` parsing
-- `core/src/moveGenerator.ts` – Move code generation
-- `core/src/typeMapper.ts` – Solidity ↔ Move type mapping
-
-### 2. Sync Interfaces
-
-- CLI and Web both call `core` with `.abi.json` or `.sol` file input.
-
-### 3. Rebuild & Test
+### Run Move Linter
 
 ```bash
-yarn build
-yarn workspace cli dev examples/MyContract.sol MyContract
+cd move-project
+sui move lint
 ```
 
-#### Developer Setup Tips
+This ensures Move code adheres to best practices and compiles correctly.
 
-- Node.js ≥ v18 recommended
-- Ensure `yarn set version` is used if needed
-- Run linters before committing changes
+---
+
+## 🧩 Plugin System
+
+The transpiler supports a plugin system for extensibility:
+
+```ts
+const pluginManager = new PluginManager();
+pluginManager.addPlugin(advancedSyntaxPlugin());
+pluginManager.addPlugin(forLoopPlugin());
+```
+
+Plugins can:
+
+- Modify ABI before Move generation
+- Add custom type mappings
+- Inject Move-specific utilities
+- Handle unsupported Solidity features
+
+---
+
+## 📊 Configuration
+
+Use `transpiler.config.json` to define settings like:
+
+```json
+{
+  "target": "sui",
+  "moduleName": "my_contract",
+  "packageName": "my_move_project",
+  "customTypes": {
+    "MyStruct": "MyMoveStruct"
+  },
+  "libs": ["event", "table"]
+}
+```
 
 ---
 
 ## 📌 Roadmap
 
-- [x] Solidity `.sol` → Move transpilation
-- [ ] Event → Move `Event` generation
-- [ ] Cross-chain value mapping validation
-- [ ] On-chain ABI compiler support
-- [ ] Multi-module support
-- [ ] Playground integration
+| Feature                             | Status         |
+| ----------------------------------- | -------------- |
+| ✅ Basic Solidity → Move conversion | ✔ Done         |
+| ✅ Multiple contracts per `.sol`    | ✔ Done         |
+| ✅ Event struct generation          | ✔ Done         |
+| ✅ Error struct generation          | ✔ Done         |
+| ✅ Mapping → Table support          | ✔ Done         |
+| ✅ Configurable module names        | ✔ Done         |
+| ✅ CLI dry run / AST dump           | ✔ Done         |
+| ✅ Web UI with Move preview         | ✔ Done         |
+| ✅ Source mapping & debug info      | ✔ Done         |
+| 🧠 AI-backed fallback (DeepSeek)    | ✔ Implemented  |
+| 🧪 Multi-contract Move project      | 🟡 In Progress |
+| 📁 Move.toml scaffolding            | 🟡 In Progress |
+| 🧵 Full AST printer                 | 🟡 In Progress |
+| 🧩 Plugin system enhancements       | 🟡 In Progress |
+| 🧪 Unit tests for Move generator    | 🔜 Coming Soon |
+| 🧩 AI-driven plugin generation      | 🔜 Coming Soon |
+
+---
+
+## 🔗 Contribution Guide
+
+We welcome contributions!
+
+### How to Contribute
+
+1. Fork this repo and create a feature branch
+2. Make changes in `core/` or `cli/` or `web/`
+3. Ensure all TypeScript errors are resolved
+4. Update documentation if needed
+5. Submit a PR with clear description
+
+### Developer Tips
+
+- Use `npm run build` to compile TypeScript
+- Run `vitest` for unit tests
+- Keep Move output clean and idiomatic
+- Always lint and format TypeScript and Move code
+- Use structured logging (`logger.info`, `logger.warn`) for clarity
 
 ---
 
 ## 📜 License
 
-MIT License © 2025 Abdulazeez
+MIT License © S2M
 
 ---
