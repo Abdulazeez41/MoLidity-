@@ -21,19 +21,80 @@ To provide a robust toolchain that:
 The project follows a **monorepo-style structure**, allowing modular development:
 
 ```
-solidity-to-move/
-├── core/               # Core logic: parsing, Move generation, type mapping
-├── cli/                # Command-line interface
-├── web/
-│   ├── backend/        # Express API + transpile route
-│   └── frontend/       # React UI with Monaco editor support
-├── examples/           # Sample Solidity inputs
-├── output/             # Generated Move files (.move)
-├── move-project/       # Scaffolded Move project (sources/, tests/)
-├── docs/
-│   └── design.md      # This file
+S2M/
 ├── README.md
-└── package.json
+├── package.json
+├── tsconfig.json
+├── transpiler.config.json      # Optional config file
+│
+├── core/
+│   ├── src/
+│   │   ├── abi/
+│   │   │   ├── abiParser.ts
+│   │   │   ├── solidityAstParser.ts
+│   │   │   └── abiDocGenerator.ts
+│   │   │
+│   │   ├── move/
+│   │   │   ├── importMapper.ts
+│   │   │   ├── typeMapper.ts
+│   │   │   ├── targetMapper.ts
+│   │   │   ├── moveGenerator.ts
+│   │   │   ├── generators/
+│   │   │   │   ├── functionGenerator.ts
+│   │   │   │   ├── eventGenerator.ts
+│   │   │   │   ├── mappingGenerator.ts
+│   │   │   │   └── errorGenerator.ts
+│   │   │   └── ast.ts
+│   │   │
+│   │   ├── plugin/
+│   │   │   ├── pluginManager.ts
+│   │   │   └── advancedSyntaxPlugin.ts
+│   │   │
+│   │   ├── utils/
+│   │   │   ├── logger.ts
+│   │   │   ├── utils.ts
+│   │   │   └── configLoader.ts
+│   │   │
+│   │   ├── types.ts
+│   │   ├── config.ts
+│   │   └── tomlUpdater.ts
+│   │
+│   └── tests/
+│       ├── abiParser.test.ts
+│       ├── moveGenerator.test.ts
+│       └── typeMapper.test.ts
+│
+├── cli/
+│   ├── src/
+│   │   ├── cli.ts
+│   │   ├── index.ts
+│   │   └── fileWriter.ts
+│   └── dist/                 # Compiled CLI output
+│
+├── web/
+│   ├── backend/
+│   │   ├── src/
+│   │   │   ├── app.ts
+│   │   │   ├── routes/
+│   │   │   │   └── transpile.ts
+│   │   │   └── types.ts
+│   │   └── dist/             # Compiled backend output
+│   │
+│   ├── frontend/
+│   │   ├── public/
+│   │   │   └── assets/
+│   │   │       └── S2M.png
+│   │   ├── src/
+│   │   │   ├── components/
+│   │   │   │   └── FileUploader.tsx
+│   │   │   ├── App.tsx
+│   │   │   └── main.tsx
+│   │   ├── index.html
+│   │   └── vite.config.ts
+│   │
+└── docs/
+    ├── design.md
+    └── .placeholder
 ```
 
 Each folder is a standalone module with shared utilities in `core/`.

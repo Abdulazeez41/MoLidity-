@@ -27,27 +27,80 @@ A powerful monorepo-based toolchain that transpiles Solidity smart contracts int
 ## 📁 Project Structure
 
 ```
-solidity-to-move/
-├── core/               # Shared logic: ABI parsing, Move generation, type mapping
+S2M/
+├── README.md
+├── package.json
+├── tsconfig.json
+├── transpiler.config.json      # Optional config file
+│
+├── core/
 │   ├── src/
-│   │   ├── abi/        # Solidity AST parser, ABI generator
-│   │   ├── move/       # Move code generator, type mapper, import resolver
-│   │   ├── plugin/     # Extensible plugin system
-│   │   ├── utils/      # Utility functions, logger, config loader
-│   │   └── types.ts    # Shared types across the codebase
-│   └── tests/          # Unit tests for core modules
-├── cli/                # Command-line interface
+│   │   ├── abi/
+│   │   │   ├── abiParser.ts
+│   │   │   ├── solidityAstParser.ts
+│   │   │   └── abiDocGenerator.ts
+│   │   │
+│   │   ├── move/
+│   │   │   ├── importMapper.ts
+│   │   │   ├── typeMapper.ts
+│   │   │   ├── targetMapper.ts
+│   │   │   ├── moveGenerator.ts
+│   │   │   ├── generators/
+│   │   │   │   ├── functionGenerator.ts
+│   │   │   │   ├── eventGenerator.ts
+│   │   │   │   ├── mappingGenerator.ts
+│   │   │   │   └── errorGenerator.ts
+│   │   │   └── ast.ts
+│   │   │
+│   │   ├── plugin/
+│   │   │   ├── pluginManager.ts
+│   │   │   └── advancedSyntaxPlugin.ts
+│   │   │
+│   │   ├── utils/
+│   │   │   ├── logger.ts
+│   │   │   ├── utils.ts
+│   │   │   └── configLoader.ts
+│   │   │
+│   │   ├── types.ts
+│   │   ├── config.ts
+│   │   └── tomlUpdater.ts
+│   │
+│   └── tests/
+│       ├── abiParser.test.ts
+│       ├── moveGenerator.test.ts
+│       └── typeMapper.test.ts
+│
+├── cli/
 │   ├── src/
-│   │   ├── cli.ts      # Main CLI handler
-│   │   └── fileWriter.ts # Move module writer
+│   │   ├── cli.ts
+│   │   ├── index.ts
+│   │   └── fileWriter.ts
+│   └── dist/                 # Compiled CLI output
+│
 ├── web/
-│   ├── backend/        # Express API for file upload and transpile route
-│   └── frontend/       # React-based web interface with Monaco editor
-├── move-project/       # Auto-generated Move project (sources/, tests/)
-├── examples/           # Sample `.sol` and `.json` input files
-├── output/             # Generated `.move` files from CLI or Web
-├── README.md           # This file
-└── package.json
+│   ├── backend/
+│   │   ├── src/
+│   │   │   ├── app.ts
+│   │   │   ├── routes/
+│   │   │   │   └── transpile.ts
+│   │   │   └── types.ts
+│   │   └── dist/             # Compiled backend output
+│   │
+│   ├── frontend/
+│   │   ├── public/
+│   │   │   └── assets/
+│   │   │       └── S2M.png
+│   │   ├── src/
+│   │   │   ├── components/
+│   │   │   │   └── FileUploader.tsx
+│   │   │   ├── App.tsx
+│   │   │   └── main.tsx
+│   │   ├── index.html
+│   │   └── vite.config.ts
+│   │
+└── docs/
+    ├── design.md
+    └── .placeholder
 ```
 
 ---
