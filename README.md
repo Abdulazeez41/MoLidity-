@@ -1,10 +1,10 @@
 # 🔄 S2M - Solidity to Move Transpiler
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
 <div align="center">
   <img src="./web/frontend/public/assets/S2M.png" alt="S2M Logo" width="300" />
 </div>
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 A powerful monorepo-based toolchain that transpiles Solidity smart contracts into Move-compatible modules on **Sui** blockchains. Supports advanced type mapping, modular imports, dynamic Move project integration, and AI-assisted fallback for complex constructs.
 
