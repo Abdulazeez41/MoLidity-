@@ -1,0 +1,16 @@
+[
+  {
+    "type": "function",
+    "name": "storeValue",
+    "inputs": [{ "name": "x", "type": "uint256" }],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "getValue",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256" }],
+    "stateMutability": "view"
+  }
+]
