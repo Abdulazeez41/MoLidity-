@@ -6,7 +6,7 @@
   <img src="./web/frontend/public/assets/S2M.png" alt="S2M Logo" width="300" />
 </div>
 
-A powerful monorepo-based toolchain that transpiles Solidity smart contracts into Move-compatible modules for both **Sui** blockchains. Supports advanced type mapping, modular imports, dynamic Move project integration, and AI-assisted fallback for complex constructs.
+A powerful monorepo-based toolchain that transpiles Solidity smart contracts into Move-compatible modules on **Sui** blockchains. Supports advanced type mapping, modular imports, dynamic Move project integration, and AI-assisted fallback for complex constructs.
 
 ## 📚 Table of Contents
 
