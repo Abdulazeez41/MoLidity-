@@ -28,7 +28,7 @@ const FileUploader: React.FC = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/transpile/upload",
+        "https://s2m-x10h.onrender.com/api/transpile/upload",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },

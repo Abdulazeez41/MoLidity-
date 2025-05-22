@@ -30,16 +30,13 @@ export const Playground: React.FC = () => {
     try {
       const formData = new FormData();
 
-      // If the user pasted code, create a temporary file
-      if (solidityCode.trim()) {
+      // Append either the uploaded file or the temporary file (not both)
+      if (uploadedFile) {
+        formData.append("file", uploadedFile); // Use the uploaded file
+      } else if (solidityCode.trim()) {
         const blob = new Blob([solidityCode], { type: "text/plain" });
         const tempFile = new File([blob], "PastedCode.sol", { type: "text/plain" });
-        formData.append("file", tempFile); // Append the temporary file
-      }
-
-      // If the user uploaded a file, append it directly
-      if (uploadedFile) {
-        formData.append("file", uploadedFile);
+        formData.append("file", tempFile); // Use the temporary file
       }
 
       // Add additional metadata
@@ -50,7 +47,7 @@ export const Playground: React.FC = () => {
 
       // Send the request to the backend
       const res = await axios.post(
-          "http://localhost:8000/api/transpile/upload",
+          "https://s2m-x10h.onrender.com/api/transpile/upload ",
           formData,
           {
             headers: {
@@ -67,7 +64,7 @@ export const Playground: React.FC = () => {
 
       try {
         const explainRes = await axios.post(
-            `${"http://localhost:8000"}/api/transpile/explain-error`,
+            `https://s2-m-frontend.vercel.app/api/transpile/explain-error`,
             { message: errorMsg }
         );
         setErrorExplanation(explainRes.data.explanation || errorMsg);
