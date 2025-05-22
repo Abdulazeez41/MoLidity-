@@ -5,7 +5,18 @@ import transpileRoute from "./routes/transpile";
 
 const app = express();
 
-app.use(cors());
+app.use(cors(
+    {
+        origin: [
+        "http://localhost:3000",
+        "https://s2m-x10h.onrender.com",
+        "https://s2-m-frontend.vercel.app",
+        "https://s2m-frontend.vercel.app",
+        ],
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        credentials: true,
+    }
+));
 app.use(express.json());
 
 app.use(
