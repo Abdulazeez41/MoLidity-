@@ -129,12 +129,12 @@ S2M/
 
 ---
 
-## 🧠 AI Integration (DeepSeek)
+## 🧠 AI Integration (QWEN AI)
 
-Integrated the **DeepSeek Coder LLM** via an abstracted service layer in:
+Integrated the **QWEN LLM** via an abstracted service layer in:
 
 ```ts
-core / src / ai / deepseekAiService.ts;
+core / src / ai / qwenAiService.ts;
 ```
 
 ### Key AI Capabilities

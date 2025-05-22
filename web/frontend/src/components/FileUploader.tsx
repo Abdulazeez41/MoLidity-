@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import * as React from "react";
+import { useState } from "react";
 import axios from "axios";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -27,7 +28,7 @@ const FileUploader: React.FC = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/transpile/upload/",
+        "http://localhost:8000/api/transpile/upload",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -69,7 +70,7 @@ const FileUploader: React.FC = () => {
     <div className="bg-gray-900 text-white min-h-screen flex flex-col justify-center items-center p-6">
       {/* Logo */}
       <div className="flex flex-col items-center mb-10">
-        <img src="/assets/S2M.png" alt="S2M Logo" className="w-20 h-20 mb-4" />
+        <img src="/assets/S2M.png" alt="S2M Logo" className="w-[200px] h-25 object-contain" />
         <h1 className="text-4xl font-extrabold text-center">
           Solidity to Move Transpiler
         </h1>

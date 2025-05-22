@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "ts-node cli/src/index.ts",
-    "dev:backend": "nodemon /backend/src/app.ts",
+    "dev:backend": "nodemon /web/backend/src/app.ts",
     "dev:frontend": "npm run dev --prefix web/frontend",
     "build:frontend": "npm run build --prefix web/frontend",
     "preview:frontend": "npm run preview --prefix web/frontend",
