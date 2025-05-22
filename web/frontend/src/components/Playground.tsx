@@ -50,7 +50,7 @@ export const Playground: React.FC = () => {
 
       // Send the request to the backend
       const res = await axios.post(
-          `${"http://localhost:8000"}/api/transpile/upload`,
+          "http://localhost:8000/api/transpile/upload",
           formData,
           {
             headers: {
