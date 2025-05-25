@@ -12,6 +12,7 @@ A powerful monorepo-based toolchain that transpiles Solidity smart contracts int
 
 - [📁 Project Structure](#-project-structure)
 - [🚀 Features](#-features)
+- [🧱 Design Architecture](#-design-architecture)
 - [🧠 AI Integration](#-ai-integration)
 - [🛠️ Installation](#️-installation)
 - [💻 Usage](#-usage)
@@ -135,6 +136,12 @@ S2M/
 | 💾 Download Move Code        | Save generated Move code as `.move` file                         |
 | 🧪 Move Linting              | Validate Move output before returning it                         |
 | 🧠 AI Fallback               | Uses Qwen AI to assist with unsupported Solidity patterns        |
+
+---
+
+## 🧱 Design Architecture
+
+👉 [Read the full design spec](./docs/design.md)
 
 ---
 
