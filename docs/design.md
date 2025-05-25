@@ -25,6 +25,8 @@ S2M/
 ├── README.md
 ├── package.json
 ├── tsconfig.json
+├── .gitignore
+├── .env.example
 ├── transpiler.config.json      # Optional config file
 │
 ├── core/
@@ -39,12 +41,12 @@ S2M/
 │   │   │   ├── typeMapper.ts
 │   │   │   ├── targetMapper.ts
 │   │   │   ├── moveGenerator.ts
-│   │   │   ├── generators/
-│   │   │   │   ├── functionGenerator.ts
-│   │   │   │   ├── eventGenerator.ts
-│   │   │   │   ├── mappingGenerator.ts
-│   │   │   │   └── errorGenerator.ts
-│   │   │   └── ast.ts
+│   │   │   ├── ast.ts
+│   │   │   └── generators/
+│   │   │       ├── functionGenerator.ts
+│   │   │       ├── eventGenerator.ts
+│   │   │       ├── mappingGenerator.ts
+│   │   │       └── errorGenerator.ts
 │   │   │
 │   │   ├── plugin/
 │   │   │   ├── pluginManager.ts
@@ -54,6 +56,11 @@ S2M/
 │   │   │   ├── logger.ts
 │   │   │   ├── utils.ts
 │   │   │   └── configLoader.ts
+│   │   │
+│   │   ├── ai/
+│   │   │   ├── AIService.ts
+│   │   │   ├── aiPromptTemplates.ts
+│   │   │   └── qwenAiService.ts
 │   │   │
 │   │   ├── types.ts
 │   │   ├── config.ts
@@ -86,7 +93,9 @@ S2M/
 │   │   │       └── S2M.png
 │   │   ├── src/
 │   │   │   ├── components/
-│   │   │   │   └── FileUploader.tsx
+│   │   │   │   ├── FileUploader.tsx
+│   │   │   │   ├── Playground.tsx
+│   │   │   │   └── Toggle.tsx
 │   │   │   ├── App.tsx
 │   │   │   └── main.tsx
 │   │   ├── index.html
@@ -165,7 +174,7 @@ Each folder is a standalone module with shared utilities in `core/`.
 - Used as fallback for unsupported syntax
 - Can suggest Move equivalents for unknown Solidity types
 - Generates Move code when deterministic rules don't apply
-- Implemented in: `core/src/ai/deepseekAiService.ts`
+- Implemented in: `core/src/ai/qwenAiService.ts`
 
 ---
 
@@ -503,7 +512,7 @@ s2m transpile -i examples/MyToken.sol -n MyToken --target sui --dry-run
 - Abstracts LLM interaction
 - Allows easy switch between OpenAI, Anthropic, Groq, DeepSeek
 
-### `core/src/ai/deepseekAiService.ts`
+### `core/src/ai/qwenAiService.ts`
 
 - Implements `AIService` using DeepSeek Coder API
 - Used for:
