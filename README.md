@@ -35,6 +35,8 @@ S2M/
 ├── README.md
 ├── package.json
 ├── tsconfig.json
+├── .gitignore
+├── .env.example
 ├── transpiler.config.json      # Optional config file
 │
 ├── core/
@@ -49,12 +51,12 @@ S2M/
 │   │   │   ├── typeMapper.ts
 │   │   │   ├── targetMapper.ts
 │   │   │   ├── moveGenerator.ts
-│   │   │   ├── generators/
-│   │   │   │   ├── functionGenerator.ts
-│   │   │   │   ├── eventGenerator.ts
-│   │   │   │   ├── mappingGenerator.ts
-│   │   │   │   └── errorGenerator.ts
-│   │   │   └── ast.ts
+│   │   │   ├── ast.ts
+│   │   │   └── generators/
+│   │   │       ├── functionGenerator.ts
+│   │   │       ├── eventGenerator.ts
+│   │   │       ├── mappingGenerator.ts
+│   │   │       └── errorGenerator.ts
 │   │   │
 │   │   ├── plugin/
 │   │   │   ├── pluginManager.ts
@@ -64,6 +66,11 @@ S2M/
 │   │   │   ├── logger.ts
 │   │   │   ├── utils.ts
 │   │   │   └── configLoader.ts
+│   │   │
+│   │   ├── ai/
+│   │   │   ├── AIService.ts
+│   │   │   ├── aiPromptTemplates.ts
+│   │   │   └── qwenAiService.ts
 │   │   │
 │   │   ├── types.ts
 │   │   ├── config.ts
@@ -96,7 +103,9 @@ S2M/
 │   │   │       └── S2M.png
 │   │   ├── src/
 │   │   │   ├── components/
-│   │   │   │   └── FileUploader.tsx
+│   │   │   │   ├── FileUploader.tsx
+│   │   │   │   ├── Playground.tsx
+│   │   │   │   └── Toggle.tsx
 │   │   │   ├── App.tsx
 │   │   │   └── main.tsx
 │   │   ├── index.html
@@ -178,27 +187,49 @@ cargo install --git https://github.com/MystenLabs/sui.git --branch devnet sui
 
 ---
 
+### Set Up AI Service (Optional)
+
+Create `.env` at root:
+
+```env
+QWEN_API_KEY=your_api_key_here
+```
+
+---
+
 ## 💻 Usage
 
 ### CLI (Local Development)
 
-```bash
-cd cli
-npm dev ../examples/MyContract.abi.json MyContract
-```
-
-Or transpile a `.sol` file:
+Transpile a Solidity file:
 
 ```bash
-npm dev ../examples/MyToken.sol MyToken
+s2m transpile -i examples/MyToken.sol -n MyToken --target sui
 ```
 
-#### CLI Options:
+Or transpile without saving:
 
-- `--target <sui|aptos>` – Specify Move framework
-- `--dry-run` – Show output without writing files
-- `--dump-ast` – Output parsed AST instead of Move code
-- `--skip-lint` – Skip Move linting after generation
+```bash
+s2m transpile -i examples/MyToken.sol -n MyToken --dry-run
+```
+
+Use AI mode for complex logic:
+
+```bash
+s2m transpile -i examples/MyToken.sol -n MyToken --use-ai
+```
+
+#### CLI Options
+
+| Option               | Description              |
+| -------------------- | ------------------------ |
+| `--target sui/aptos` | Choose Move dialect      |
+| `--use-ai`           | Use AI fallback          |
+| `--dry-run`          | Show Move output only    |
+| `--dump-ast`         | Show parsed AST instead  |
+| `--skip-lint`        | Skip Move lint check     |
+| `--force`            | Overwrite existing files |
+| `--verbose`          | Enable detailed logging  |
 
 ---
 
@@ -305,12 +336,6 @@ module my_token::MyToken {
     assert!(to != ::default(), 0);
     self.balances.borrow_mut(&to).value = self.balances.borrow_mut(&to).value + amount;
   }
-
-  struct TransferEvent has copy, drop, store {
-    from: address,
-    to: address,
-    amount: u64,
-  };
 }
 ```
 
@@ -318,28 +343,26 @@ module my_token::MyToken {
 
 ## 🧪 Tests & Linting
 
-Generated Move code supports unit test scaffolding:
-
-### Example Test
-
-```move
-#[test]
-fun test_transfer() {
-    let sender = @0x1;
-    let receiver = @0x2;
-    let mut token = MyToken::init(&mut TxContext::new(sender));
-    MyToken::transfer(&mut token, receiver, &mut TxContext::new(sender));
-    let balance = *token.balances.borrow(&receiver);
-    assert(balance == 100, 100);
-}
-```
-
-### Run Move Linter
+Run unit tests:
 
 ```bash
-cd move-project
-sui move lint
+cd core/tests
+vitest run
 ```
+
+Lint generated Move code:
+
+```bash
+sui move lint output/MyToken.move
+```
+
+If any issues arise, AI can explain them:
+
+```bash
+s2m explain-error "Mismatched types in mapping"
+```
+
+---
 
 This ensures Move code adheres to best practices and compiles correctly.
 
@@ -395,7 +418,7 @@ Use `transpiler.config.json` to define settings like:
 | ✅ CLI dry run / AST dump           | ✔ Done         |
 | ✅ Web UI with Move preview         | ✔ Done         |
 | ✅ Source mapping & debug info      | ✔ Done         |
-| 🧠 AI-backed fallback (DeepSeek)    | ✔ Implemented  |
+| 🧠 AI-backed fallback (Qwen)        | ✔ Implemented  |
 | 🧪 Multi-contract Move project      | 🟡 In Progress |
 | 📁 Move.toml scaffolding            | 🟡 In Progress |
 | 🧵 Full AST printer                 | 🟡 In Progress |
@@ -424,6 +447,7 @@ We welcome contributions!
 - Keep Move output clean and idiomatic
 - Always lint and format TypeScript and Move code
 - Use structured logging (`logger.info`, `logger.warn`) for clarity
+- Use plugins to extend functionality
 
 ---
 
