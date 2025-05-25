@@ -154,6 +154,8 @@ Each folder is a standalone module with shared utilities in `core/`.
 
 ### 🌐 Web Interface
 
+fDeep
+
 - A **React-based frontend** allows users to upload `.sol` or `.json`
 - Move code is displayed with syntax highlighting
 - Users can download the generated `.move` file
@@ -170,7 +172,7 @@ Each folder is a standalone module with shared utilities in `core/`.
 
 ### 🤖 AI Integration (Optional)
 
-- DeepSeek Coder model integration via API
+- Qwen AI model integration via API
 - Used as fallback for unsupported syntax
 - Can suggest Move equivalents for unknown Solidity types
 - Generates Move code when deterministic rules don't apply
@@ -514,7 +516,7 @@ s2m transpile -i examples/MyToken.sol -n MyToken --target sui --dry-run
 
 ### `core/src/ai/qwenAiService.ts`
 
-- Implements `AIService` using DeepSeek Coder API
+- Implements `AIService` using Qwen AI API
 - Used for:
   - Type suggestions
   - Fallback translation
