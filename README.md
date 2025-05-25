@@ -134,7 +134,7 @@ S2M/
 | 🌐 Web UI                    | File uploader with Move syntax highlighting                      |
 | 💾 Download Move Code        | Save generated Move code as `.move` file                         |
 | 🧪 Move Linting              | Validate Move output before returning it                         |
-| 🧠 AI Fallback               | Uses DeepSeek Coder to assist with unsupported Solidity patterns |
+| 🧠 AI Fallback               | Uses Qwen AI to assist with unsupported Solidity patterns        |
 
 ---
 
