@@ -141,6 +141,8 @@ S2M/
 
 ## 🧱 Design Architecture
 
+![S2M Architecture](docs/architecture.svg)
+
 👉 [Read the full design spec](./docs/design.md)
 
 ---
